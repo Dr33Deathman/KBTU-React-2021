@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 export default function Friends() {
 
@@ -41,13 +40,14 @@ export default function Friends() {
     },
   ];
 
-  const [selectedFriend, setSelectedFriend] = useState(friends[0]);
+  const { friend } = useParams();
 
-  function onSelectFriend(event, id) {
-    event.preventDefault();
-    event.stopPropagation();
-    setSelectedFriend(friends[id])
+  const getFriend = (name) => {
+    const index = friends.findIndex(f => f.name === name);
+    return friends[index === -1 ? 0 : index];
   }
+
+  const selectedFriend = getFriend(friend);
 
   return (
     <div>
@@ -59,7 +59,7 @@ export default function Friends() {
         <ul className="friends-list">
           {friends.map((f, k) => 
             <li key={k}>
-              <Link to={`${f.name}`} onClick={e => onSelectFriend(e, k)}>{f.name}</Link>
+              <Link to={`/friends/${f.name}`}>{f.name}</Link>
             </li>
           )}
         </ul>
@@ -78,6 +78,5 @@ export default function Friends() {
         </div>}
       </main >
     </div >
-
   )
 }

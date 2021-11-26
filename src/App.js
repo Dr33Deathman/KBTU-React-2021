@@ -38,7 +38,7 @@ const App = () => {
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/friends">
+              <Link to="/friends/first">
                 Friends
               </Link>
             </li>
@@ -59,7 +59,7 @@ const App = () => {
               </CheckForAuth>
             } />
             <Route path="/home" element={<Home />} />
-            <Route path="/friends/*" element={
+            <Route path="/friends/:friend" element={
               <CheckForAuth>
                 <Friends />
               </CheckForAuth>
