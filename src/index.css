@@ -4,45 +4,73 @@
   font-family: system-ui;
 }
 
-.nav {
+nav {
   background-color: rgb(40, 40, 40);
-}
-
-.nav p {
   color: white;
   font-size: 30px;
-  padding: 30px;
+  padding: 15px 10px;
 }
 
-.container {
-  padding: 100px;
+nav ul {
+  display: flex;
+  list-style-type: none;
 }
 
-.header .row {
-  margin-top: 100px;
+nav li {
+  margin: 20px 10px;
 }
 
-.task {
-  width: 90%;
-  font-size: 20px;
+nav a {
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
 }
 
-.list-group {
+nav a:hover {
+  text-decoration: underline;
+}
+
+.navbar-collapse {
+  margin: 0px;
+}
+
+.container-sm {
   margin-top: 50px;
-  padding: 30px;
+  text-align: -webkit-center;
+  padding: 0px;
 }
 
-.task .trash {
-  float: right;
-  height: 25px;
-  cursor: pointer;
-  margin-top: 3px;
+.profile-wrapper {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
-.task input {
-  cursor: pointer;
+.friends-wrapper {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 
-.strike-through:checked + span {
-  text-decoration: line-through;
+.friends-wrapper ul {
+  display: block;
+  list-style-type: disc;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding-inline-start: 40px;
+}
+
+@media screen and (min-width: 768px) {
+  .friends-wrapper {
+    flex-direction: row;
+  }
+}
+
+.friends-list a {
+  font-weight: bold;
 }

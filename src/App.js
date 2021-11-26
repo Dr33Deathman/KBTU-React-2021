@@ -1,58 +1,75 @@
+import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
 import { useState } from 'react';
-import TodoList from './components/TodoList';
-import AddTodo from './components/AddTodo';
+import { isAuthorized as checkAuth, unAuthorize } from "./utils/authorization";
+import Profile from "./components/Profile";
+import Friends from "./components/Friends";
+import Login from './components/Login';
+import Home from "./components/Home";
 
 const App = () => {
-  // Fetch TodoList
-  const fetchTodoList = () => {
-    return JSON.parse(localStorage.getItem('todoList')) || [];
-  };
 
-  const [todoList, setTodoList] = useState(fetchTodoList());
+  const [isAuthorized, setIsAuthorized] = useState(checkAuth());
 
-  const saveCache = () => {
-    localStorage.setItem("todoList", JSON.stringify(todoList));
-  };
+  function CheckForAuth({ children }) {
+    return isAuthorized ?
+      children :
+      <Navigate to="/login" replace />
+  }
 
-  // Add Todo
-  const addTodo = (todo) => {
-    const newTodo = {
-      id: new Date().getTime(),
-      text: todo,
-      checked: false
-    };
-    setTodoList([...todoList, newTodo]);
-  };
+  function onLogout(event) {
+    event.stopPropagation(); 
+    setIsAuthorized(false);
+    unAuthorize();
+  }
 
-  // Delete Todo
-  const deleteTodo = (id) => {
-    setTodoList(todoList.filter((todo) => todo.id !== id));
-  };
-
-  // Toggle Checked
-  const toggleTodo = (id) => {
-    setTodoList(
-      todoList.map((todo) =>
-        todo.id === id ? { ...todo, checked: !todo.checked } : todo
-      )
-    );
-  };
-
-  saveCache();
   return (
-    <>
-      <div className="nav">
-        <p>TODO List</p>
-      </div>
-      <div className="container-md" style={{ marginTop: '100px'}}>
-        <AddTodo onAdd={addTodo} />
-        <TodoList
-          todoList={todoList}
-          onDelete={deleteTodo}
-          onToggle={toggleTodo}
-        />
-      </div>
-    </>
+    <main>
+      <Router>
+        <nav className="navbar-collapse">
+          <ul>
+            <li className="nav-item">
+              <Link to="/home">
+                Home
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/profile">
+                Profile
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/friends">
+                Friends
+              </Link>
+            </li>
+            <li className="nav-item navbar-nav ms-auto" style={{ marginRight: "30px" }}>
+              {!isAuthorized ?
+                <Link to="/login">Login</Link> :
+                <Link to="/home" onClick={onLogout}>Logout</Link>
+              }
+            </li>
+          </ul>
+        </nav>
+        <section className="container-sm">
+          <Routes>
+            <Route path="/profile" element={
+              <CheckForAuth>
+                <Profile />
+                <h1>Hello!</h1>
+              </CheckForAuth>
+            } />
+            <Route path="/home" element={<Home />} />
+            <Route path="/friends/*" element={
+              <CheckForAuth>
+                <Friends />
+              </CheckForAuth>
+            } />
+            <Route path="/login" element={<Login onAuthorize={setIsAuthorized}/>} />
+            <Route path="*" element={<Home />} />
+          </Routes>
+        </section>
+      </Router>
+    </main>
   )
 }
 

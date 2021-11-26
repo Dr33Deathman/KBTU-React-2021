@@ -1,6 +1,5 @@
 # Team Members
 * **Kamran Akhmedov**
-* **Daniil Koilibayev**
 
 # Getting Started with Create React App
 
